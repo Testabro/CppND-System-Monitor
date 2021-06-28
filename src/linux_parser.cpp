@@ -91,17 +91,36 @@ long LinuxParser::Jiffies() {
 // REMOVE: [[maybe_unused]] once you define the function
 long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
 
-// TODO: Read and return the number of active jiffies for the system
-long LinuxParser::ActiveJiffies() { 
-  return 0;
-}
+long LinuxParser::ActiveJiffies() { return std::stol(CpuUtilization().at(1)); }
 
-// TODO: Read and return the number of idle jiffies for the system
-long LinuxParser::IdleJiffies() { return 0; }
+long LinuxParser::IdleJiffies() { return std::stol(CpuUtilization().at(4)); }
 
-// TODO: Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() {
-    return {}; 
+  // Array values correspond to values as:
+  // 0: cpu
+  // 1: user: normal processes executing in user mode
+  // 2: nice: niced processes executing in user mode
+  // 3: system: processes executing in kernel mode
+  // 4: idle: twiddling thumbs
+  // 5: iowait: In a word, iowait stands for waiting for I/O to complete. But there are several problems:
+  // 6: irq: servicing interrupts
+  // 7: softirq: servicing softirqs
+  // 8: steal: involuntary wait
+  // 9: guest: running a normal guest
+  // 10:guest_nice: running a niced guest
+  string line;
+
+  vector<string> jiffies;
+  std::ifstream filestream(kProcDirectory + kStatFilename);
+  if (filestream.is_open()) {
+    std::getline(filestream, line);
+    std::istringstream linestream(line);
+    std::string token;
+    while ( linestream >> token ){
+        jiffies.push_back(token);
+    }
+  }
+  return jiffies; 
 }
 
 int LinuxParser::TotalProcesses() {
