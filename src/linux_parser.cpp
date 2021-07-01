@@ -127,7 +127,7 @@ long LinuxParser::ActiveJiffies(int pid) {
   return std::stol(jiffies.at(13)) + std::stol(jiffies.at(14)); 
 }
 
-long LinuxParser::ActiveJiffies() { return std::stol(CpuUtilization().at(1)); }
+long LinuxParser::ActiveJiffies() { return std::stol(CpuUtilization().at(1)) + std::stol(CpuUtilization().at(3)); }
 
 long LinuxParser::IdleJiffies() { return std::stol(CpuUtilization().at(4)); }
 
