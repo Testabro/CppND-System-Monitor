@@ -269,6 +269,22 @@ string LinuxParser::User(int pid) {
   return "nouser";
 }
 
-// TODO: Read and return the uptime of a process
-// REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::UpTime(int pid[[maybe_unused]]) { return 0; }
+long LinuxParser::UpTime(int pid) {
+  //
+  //(22) The time the process started after system boot. In kernels before Linux 2.6, this value was expressed in jiffies. 
+  //Since Linux 2.6, the value is expressed in clock ticks (divide by sysconf(_SC_CLK_TCK)).
+  //
+
+  string clock_ticks;
+  string line;
+  int clock_ticks_index = 22;
+  std::ifstream stream(kProcDirectory + std::to_string(pid) + kStatFilename);
+  if (stream.is_open()) {
+    std::getline(stream, line);
+    std::istringstream linestream(line);
+    for (int i = 1; i < clock_ticks_index; i++) {
+        linestream >> clock_ticks;
+    }
+  }
+  return LinuxParser::UpTime() - std::stol(clock_ticks) / sysconf(_SC_CLK_TCK);
+}
