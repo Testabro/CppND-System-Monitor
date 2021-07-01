@@ -16,8 +16,7 @@ int Process::Pid() { return pid_; }
 
 void Process::Pid(int pid) { pid_ = pid; }
 
-// TODO: Return this process's CPU utilization
-float Process::CpuUtilization() const { return 0; }
+float Process::CpuUtilization() const { return (float)LinuxParser::ActiveJiffies(pid_) / (float)LinuxParser::ActiveJiffies(); }
 
 // TODO: Return the command that generated this process
 string Process::Command() { return LinuxParser::Command(pid_); }

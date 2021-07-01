@@ -108,9 +108,24 @@ long LinuxParser::Jiffies() {
   return UpTime() / sysconf(_SC_CLK_TCK);
 }
 
-// TODO: Read and return the number of active jiffies for a PID
-// REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
+long LinuxParser::ActiveJiffies(int pid) {
+  // Array values correspond to values as:
+  // 13: Amount of time that this process has been scheduled in user mode, measured in clock ticks (divide by sysconf(_SC_CLK_TCK)).
+  // 14: Amount of time that this process has been scheduled in kernel mode, measured in clock ticks (divide by sysconf(_SC_CLK_TCK)).
+  string line;
+
+  vector<string> jiffies;
+  std::ifstream filestream(kProcDirectory + std::to_string(pid) + kStatFilename);
+  if (filestream.is_open()) {
+    std::getline(filestream, line);
+    std::istringstream linestream(line);
+    std::string token;
+    while ( linestream >> token ){
+        jiffies.push_back(token);
+    }
+  }
+  return std::stol(jiffies.at(13)) + std::stol(jiffies.at(14)); 
+}
 
 long LinuxParser::ActiveJiffies() { return std::stol(CpuUtilization().at(1)); }
 
