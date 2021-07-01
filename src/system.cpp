@@ -17,11 +17,13 @@ using std::vector;
 Processor& System::Cpu() { return cpu_; }
 
 vector<Process>& System::Processes() {
+    processes_.clear();
     for(int pid : LinuxParser::Pids()) {
         Process process;
         process.Pid(pid);
         processes_.push_back(process);
     }
+    std::sort(processes_.begin(), processes_.end());
     return processes_;
 }
 
