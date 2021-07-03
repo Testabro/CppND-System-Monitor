@@ -5,14 +5,14 @@
 
 using std::string;
 
-// TODO: Refactor repeated 
-// INPUT: Long int measuring seconds
-// OUTPUT: HH:MM:SS
+const int SEC_PER_HR = 3600;
+const int SEC_PER_MIN = 60;
+
 string Format::ElapsedTime(long seconds) {
-    int hours = seconds/3600;
-    int time = seconds%3600;
-    int minutes = time/60;
-    time = time % 60;
+    int hours = seconds / SEC_PER_HR;
+    int time = seconds % SEC_PER_HR;
+    int minutes = time / SEC_PER_MIN;
+    time = time % SEC_PER_MIN;
     int seconds_remaining = time;
 
     std::ostringstream ostr_hr;
