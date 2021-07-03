@@ -124,12 +124,26 @@ long LinuxParser::ActiveJiffies(int pid) {
         jiffies.push_back(token);
     }
   }
-  return std::stol(jiffies.at(13)) + std::stol(jiffies.at(14)); 
+
+  if(!jiffies.at(13).empty() && !jiffies.at(14).empty()) {
+      return std::stol(jiffies.at(13)) + std::stol(jiffies.at(14));
+  }
+  return 0; 
 }
 
-long LinuxParser::ActiveJiffies() { return std::stol(CpuUtilization().at(1)) + std::stol(CpuUtilization().at(3)); }
+long LinuxParser::ActiveJiffies() {
+  if (!CpuUtilization().at(1).empty() && !CpuUtilization().at(3).empty()){
+    return std::stol(CpuUtilization().at(1)) + std::stol(CpuUtilization().at(3));
+  }  
+  return 0;
+}
 
-long LinuxParser::IdleJiffies() { return std::stol(CpuUtilization().at(4)); }
+long LinuxParser::IdleJiffies() {
+  if (!CpuUtilization().at(4).empty()) {
+    return std::stol(CpuUtilization().at(4));
+  } 
+  return 0; 
+}
 
 vector<string> LinuxParser::CpuUtilization() {
   // Array values correspond to values as:
@@ -207,7 +221,11 @@ string LinuxParser::Command(int pid) {
         command_elements.push_back(token);
     }
   }
-  return command_elements.back();
+  if (!command_elements.empty())
+  {
+    return command_elements.back();
+  }
+  return "none";  
 }
 
 string LinuxParser::Ram(int pid) {
@@ -226,7 +244,7 @@ string LinuxParser::Ram(int pid) {
       }
     }
   } 
-  return 0;
+  return "none";
 }
 
 string LinuxParser::Uid(int pid) {
@@ -244,7 +262,7 @@ string LinuxParser::Uid(int pid) {
       }
     }
   }
-  return 0;
+  return "none";
 }
 
 string LinuxParser::User(int pid) { 
