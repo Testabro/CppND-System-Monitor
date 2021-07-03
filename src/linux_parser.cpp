@@ -261,7 +261,7 @@ string LinuxParser::User(int pid) {
       while (std::getline(linestream, token, ':')) {
         if (token == uid)
         { 
-          return intial_line.substr(0, intial_line.find(":"));
+          return intial_line.substr(0, intial_line.find(":")) + " ";
         }
       }  
     }
