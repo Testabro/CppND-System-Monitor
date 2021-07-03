@@ -282,9 +282,9 @@ long LinuxParser::UpTime(int pid) {
   if (stream.is_open()) {
     std::getline(stream, line);
     std::istringstream linestream(line);
-    for (int i = 1; i < clock_ticks_index; i++) {
+    for (int i = 1; i <= clock_ticks_index; i++) {
         linestream >> clock_ticks;
     }
   }
-  return (LinuxParser::Jiffies() + std::stoi(clock_ticks)) / sysconf(_SC_CLK_TCK);
+  return (LinuxParser::Jiffies() - std::stoi(clock_ticks)) / sysconf(_SC_CLK_TCK);
 }
