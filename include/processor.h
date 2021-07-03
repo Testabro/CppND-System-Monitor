@@ -3,9 +3,8 @@
 
 class Processor {
  public:
-  float Utilization();  // TODO: See src/processor.cpp
+  float Utilization(); 
 
-  // TODO: Declare any necessary private members
  private:
     long _prev_active_jiffs;
     long _prev_idle_jiffs;

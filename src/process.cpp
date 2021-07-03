@@ -11,7 +11,6 @@ using std::string;
 using std::to_string;
 using std::vector;
 
-// TODO: Return this process's ID
 int Process::Pid() { return pid_; }
 
 void Process::Pid(int pid) { pid_ = pid; }
@@ -23,7 +22,6 @@ float Process::CpuUtilization() const{
     return process_cpu_util;
 }
 
-// TODO: Return the command that generated this process
 string Process::Command() { return LinuxParser::Command(pid_); }
 
 string Process::Ram() { return LinuxParser::Ram(pid_); }
