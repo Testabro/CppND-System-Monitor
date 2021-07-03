@@ -105,7 +105,7 @@ long LinuxParser::UpTime() {
 }
 
 long LinuxParser::Jiffies() {
-  return UpTime() / sysconf(_SC_CLK_TCK);
+  return UpTime() * sysconf(_SC_CLK_TCK);
 }
 
 long LinuxParser::ActiveJiffies(int pid) {
@@ -286,5 +286,5 @@ long LinuxParser::UpTime(int pid) {
         linestream >> clock_ticks;
     }
   }
-  return LinuxParser::UpTime() - std::stol(clock_ticks) / sysconf(_SC_CLK_TCK);
+  return LinuxParser::UpTime() - (std::stoi(clock_ticks) / sysconf(_SC_CLK_TCK));
 }
