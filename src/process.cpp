@@ -16,7 +16,7 @@ int Process::Pid() { return pid_; }
 
 void Process::Pid(int pid) { pid_ = pid; }
 
-float Process::CpuUtilization() const { return (float)LinuxParser::ActiveJiffies(pid_) / (float)LinuxParser::ActiveJiffies(); }
+float Process::CpuUtilization() const {return (float)LinuxParser::ActiveJiffies(pid_) / (float)LinuxParser::ActiveJiffies(); }
 
 // TODO: Return the command that generated this process
 string Process::Command() { return LinuxParser::Command(pid_); }
@@ -28,7 +28,7 @@ string Process::User() { return LinuxParser::User(pid_); }
 long int Process::UpTime() { return LinuxParser::UpTime(pid_); }
 
 bool Process::operator<(Process const& a) const {
-    if (CpuUtilization() < a.CpuUtilization()) {
+    if (a.CpuUtilization() < CpuUtilization()) {
         return true;
     }
     return false;

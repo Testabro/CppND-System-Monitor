@@ -286,5 +286,5 @@ long LinuxParser::UpTime(int pid) {
         linestream >> clock_ticks;
     }
   }
-  return LinuxParser::UpTime() - (std::stoi(clock_ticks) / sysconf(_SC_CLK_TCK));
+  return (LinuxParser::Jiffies() + std::stoi(clock_ticks)) / sysconf(_SC_CLK_TCK);
 }
